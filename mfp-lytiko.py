@@ -3,8 +3,8 @@ import myfitnesspal
 import kirjava
 import pytz
 from datetime import datetime, date, time, timezone
-from secrets import LYTIKO_TOKEN, USERNAME, PASSWORD, CALORIES_ID, SUGAR_ID, WEIGHT_ID
-# CALORIES_ID, CARBOHYDRATES_ID, FAT_ID, PROTEIN_ID, SODIUM_ID, SUGAR_ID, 
+from secrets import LYTIKO_TOKEN, USERNAME, PASSWORD, CALORIES_ID, SUGAR_ID, WEIGHT_ID, CARBOHYDRATES_ID, FAT_ID, PROTEIN_ID, SODIUM_ID
+
 
 
 DATE = int(datetime.now().timestamp())
@@ -47,6 +47,51 @@ sugar_mutation = """
     { measurement {id}}
     }
 """
+
+carbohydrates_mutation = """
+    mutation {createMeasurement(
+        quantity: """ + CARBOHYDRATES_ID + """,
+        value:""" + str(int(totals['carbohydrates'])) + """,
+        timezone: "Europe/London",
+        datetime:"""+ str(dt) + """
+    )
+    { measurement {id}}
+    }
+"""
+
+fat_mutation = """
+    mutation {createMeasurement(
+        quantity: """ + FAT_ID + """,
+        value:""" + str(int(totals['fat'])) + """,
+        timezone: "Europe/London",
+        datetime:"""+ str(dt) + """
+    )
+    { measurement {id}}
+    }
+"""
+
+protein_mutation = """
+    mutation {createMeasurement(
+        quantity: """ + PROTEIN_ID + """,
+        value:""" + str(int(totals['protein'])) + """,
+        timezone: "Europe/London",
+        datetime:"""+ str(dt) + """
+    )
+    { measurement {id}}
+    }
+"""
+
+sodium_mutation = """
+    mutation {createMeasurement(
+        quantity: """ + SODIUM_ID + """,
+        value:""" + str(int(totals['sodium'])) + """,
+        timezone: "Europe/London",
+        datetime:"""+ str(dt) + """
+    )
+    { measurement {id}}
+    }
+"""
+
 weight_mutation = """
     mutation {createMeasurement(
         quantity: """ + WEIGHT_ID + """,
@@ -57,11 +102,12 @@ weight_mutation = """
     { measurement {id}}
     }
 """
+
 lytiko_url = "https://api.lytiko.com/graphql"
 print(kirjava.execute(lytiko_url, calories_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
 print(kirjava.execute(lytiko_url, sugar_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
 print(kirjava.execute(lytiko_url, weight_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-# print(kirjava.execute(lytiko_url, carbohydrates_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-# print(kirjava.execute(lytiko_url, fat_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-# print(kirjava.execute(lytiko_url, protein_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-# print(kirjava.execute(lytiko_url, sodium_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
+print(kirjava.execute(lytiko_url, carbohydrates_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
+print(kirjava.execute(lytiko_url, fat_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
+print(kirjava.execute(lytiko_url, protein_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
+print(kirjava.execute(lytiko_url, sodium_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
