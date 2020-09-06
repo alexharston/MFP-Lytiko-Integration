@@ -3,7 +3,7 @@ import myfitnesspal
 import kirjava
 import pytz
 from datetime import datetime, date, time, timezone
-from secrets import LYTIKO_TOKEN, USERNAME, PASSWORD, CALORIES_ID, SUGAR_ID, WEIGHT_ID, CARBOHYDRATES_ID, FAT_ID, PROTEIN_ID, SODIUM_ID
+from secrets import LYTIKO_USERNAME, LYTIKO_PASSWORD, USERNAME, PASSWORD, CALORIES_ID, SUGAR_ID, WEIGHT_ID, CARBOHYDRATES_ID, FAT_ID, PROTEIN_ID, SODIUM_ID
 
 
 
@@ -103,11 +103,21 @@ weight_mutation = """
     }
 """
 
+login_mutation = """
+    mutation {login(
+            email: """ + '"' + LYTIKO_USERNAME + '"' + """, 
+            password: """ + '"' + LYTIKO_PASSWORD + '"' + """
+        ) 
+        { token } 
+        }
+"""
 lytiko_url = "https://api.lytiko.com/graphql"
-print(kirjava.execute(lytiko_url, calories_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-print(kirjava.execute(lytiko_url, sugar_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-print(kirjava.execute(lytiko_url, weight_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-print(kirjava.execute(lytiko_url, carbohydrates_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-print(kirjava.execute(lytiko_url, fat_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-print(kirjava.execute(lytiko_url, protein_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
-print(kirjava.execute(lytiko_url, sodium_mutation, headers={"Authorization": f"{LYTIKO_TOKEN}"}))
+token = (kirjava.execute(lytiko_url, login_mutation))
+token = token['data']['login']['token']
+print(kirjava.execute(lytiko_url, calories_mutation, headers={"Authorization": f"{token}"}))
+print(kirjava.execute(lytiko_url, sugar_mutation, headers={"Authorization": f"{token}"}))
+print(kirjava.execute(lytiko_url, weight_mutation, headers={"Authorization": f"{token}"}))
+print(kirjava.execute(lytiko_url, carbohydrates_mutation, headers={"Authorization": f"{token}"}))
+print(kirjava.execute(lytiko_url, fat_mutation, headers={"Authorization": f"{token}"}))
+print(kirjava.execute(lytiko_url, protein_mutation, headers={"Authorization": f"{token}"}))
+print(kirjava.execute(lytiko_url, sodium_mutation, headers={"Authorization": f"{token}"}))
