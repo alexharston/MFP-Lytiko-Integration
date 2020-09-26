@@ -33,7 +33,7 @@ nutrients_mutation = """
         rawFat: """ + str(int(totals['fat'])) +""",
         rawProtein: """ + str(int(totals['protein'])) +""",
         rawSugar: """ + str(int(totals['sugar'])) +""",
-        rawSalt: """ + str(int(totals['sodium'])) +""",
+        rawSalt: """ + str(int(totals['sodium']/1000)) +""",
         components: [],
         timezone: "Europe/London",
         datetime:"""+ str(dt) + """
