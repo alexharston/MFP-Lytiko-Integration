@@ -9,8 +9,8 @@ from secrets import LYTIKO_USERNAME, LYTIKO_PASSWORD, USERNAME, PASSWORD, CALORI
 
 DATE = int(datetime.now().timestamp())
 today = date.today()
-dt = int(datetime(today.year, today.month, today.day, tzinfo=pytz.utc).timestamp())
-
+dt = int(datetime.now().timestamp())
+print('dt: ', dt)
 #connect to MyFitnessPal with credentials
 client = myfitnesspal.Client(username=USERNAME, password=PASSWORD)
 
@@ -25,72 +25,23 @@ snacks = day.meals[3]
 
 totals = day.totals
 weight = list(client.get_measurements('Weight').items())[-1][1]
-
-calories_mutation = """
-    mutation {createMeasurement(
-        quantity: """ + CALORIES_ID + """,
-        value:""" + str(int(totals['calories'])) + """,
+print(totals)
+nutrients_mutation = """
+    mutation {createMeal(
+        rawCalories: """ + str(int(totals['calories'])) +""",
+        rawCarbohydrates: """ + str(int(totals['carbohydrates'])) +""",
+        rawFat: """ + str(int(totals['fat'])) +""",
+        rawProtein: """ + str(int(totals['protein'])) +""",
+        rawSugar: """ + str(int(totals['sugar'])) +""",
+        rawSalt: """ + str(int(totals['sodium'])) +""",
+        components: [],
         timezone: "Europe/London",
         datetime:"""+ str(dt) + """
     )
-    { measurement {id}}
+    { meal {id}}
     }
 """
-
-sugar_mutation = """
-    mutation {createMeasurement(
-        quantity: """ + SUGAR_ID + """,
-        value:""" + str(int(totals['sugar'])) + """,
-        timezone: "Europe/London",
-        datetime:"""+ str(dt) + """
-    )
-    { measurement {id}}
-    }
-"""
-
-carbohydrates_mutation = """
-    mutation {createMeasurement(
-        quantity: """ + CARBOHYDRATES_ID + """,
-        value:""" + str(int(totals['carbohydrates'])) + """,
-        timezone: "Europe/London",
-        datetime:"""+ str(dt) + """
-    )
-    { measurement {id}}
-    }
-"""
-
-fat_mutation = """
-    mutation {createMeasurement(
-        quantity: """ + FAT_ID + """,
-        value:""" + str(int(totals['fat'])) + """,
-        timezone: "Europe/London",
-        datetime:"""+ str(dt) + """
-    )
-    { measurement {id}}
-    }
-"""
-
-protein_mutation = """
-    mutation {createMeasurement(
-        quantity: """ + PROTEIN_ID + """,
-        value:""" + str(int(totals['protein'])) + """,
-        timezone: "Europe/London",
-        datetime:"""+ str(dt) + """
-    )
-    { measurement {id}}
-    }
-"""
-
-sodium_mutation = """
-    mutation {createMeasurement(
-        quantity: """ + SODIUM_ID + """,
-        value:""" + str(int(totals['sodium'])) + """,
-        timezone: "Europe/London",
-        datetime:"""+ str(dt) + """
-    )
-    { measurement {id}}
-    }
-"""
+print(nutrients_mutation)
 
 weight_mutation = """
     mutation {createMeasurement(
@@ -114,10 +65,4 @@ login_mutation = """
 lytiko_url = "https://api.lytiko.com/graphql"
 token = (kirjava.execute(lytiko_url, login_mutation))
 token = token['data']['login']['token']
-print(kirjava.execute(lytiko_url, calories_mutation, headers={"Authorization": f"{token}"}))
-print(kirjava.execute(lytiko_url, sugar_mutation, headers={"Authorization": f"{token}"}))
-print(kirjava.execute(lytiko_url, weight_mutation, headers={"Authorization": f"{token}"}))
-print(kirjava.execute(lytiko_url, carbohydrates_mutation, headers={"Authorization": f"{token}"}))
-print(kirjava.execute(lytiko_url, fat_mutation, headers={"Authorization": f"{token}"}))
-print(kirjava.execute(lytiko_url, protein_mutation, headers={"Authorization": f"{token}"}))
-print(kirjava.execute(lytiko_url, sodium_mutation, headers={"Authorization": f"{token}"}))
+print(kirjava.execute(lytiko_url, nutrients_mutation, headers={"Authorization": f"{token}"}))
