@@ -39,7 +39,7 @@ breakfast_mutation = """
         rawFat: """ + str(int(breakfast.totals['fat'] if breakfast else 0)) +""",
         rawProtein: """ + str(int(breakfast.totals['protein'] if breakfast else 0)) +""",
         rawSugar: """ + str(int(breakfast.totals['sugar'] if breakfast else 0)) +""",
-        rawSalt: """ + str(int(breakfast.totals['sodium'] if breakfast else 0)) +""",
+        rawSalt: """ + str(int(breakfast.totals['sodium']/1000 if breakfast else 0)) +""",
         components: [],
         timezone: "Europe/London",
         datetime:""" + str(yesterday_breakfast) + """
@@ -56,7 +56,7 @@ lunch_mutation = """
         rawFat: """ + str(int(lunch.totals['fat'] if lunch else 0)) +""",
         rawProtein: """ + str(int(lunch.totals['protein'] if lunch else 0)) +""",
         rawSugar: """ + str(int(lunch.totals['sugar'] if lunch else 0)) +""",
-        rawSalt: """ + str(int(lunch.totals['sodium'] if lunch else 0)) +""",
+        rawSalt: """ + str(int(lunch.totals['sodium']/1000 if lunch else 0)) +""",
         components: [],
         timezone: "Europe/London",
         datetime:""" + str(yesterday_lunch) + """
@@ -73,7 +73,7 @@ dinner_mutation = """
         rawFat: """ + str(int(dinner.totals['fat'] if dinner else 0)) +""",
         rawProtein: """ + str(int(dinner.totals['protein'] if dinner else 0)) +""",
         rawSugar: """ + str(int(dinner.totals['sugar'] if dinner else 0)) +""",
-        rawSalt: """ + str(int(dinner.totals['sodium'] if dinner else 0)) +""",
+        rawSalt: """ + str(int(dinner.totals['sodium']/1000 if dinner else 0)) +""",
         components: [],
         timezone: "Europe/London",
         datetime:""" + str(yesterday_dinner) + """
@@ -90,7 +90,7 @@ snacks_mutation = """
         rawFat: """ + str(int(snacks.totals['fat'] if snacks else 0)) +""",
         rawProtein: """ + str(int(snacks.totals['protein'] if snacks else 0)) +""",
         rawSugar: """ + str(int(snacks.totals['sugar'] if snacks else 0)) +""",
-        rawSalt: """ + str(int(snacks.totals['sodium'] if snacks else 0)) +""",
+        rawSalt: """ + str(int(snacks.totals['sodium']/1000 if snacks else 0)) +""",
         components: [],
         timezone: "Europe/London",
         datetime:""" + str(yesterday_snacks) + """
